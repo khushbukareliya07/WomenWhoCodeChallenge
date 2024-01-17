@@ -1,0 +1,57 @@
+/*
+Approach - 1 Brute Force:
+Go through a loop for each element to find its greater element.
+TC: O(n*n)
+SC: O(1);
+
+Approach - 2:
+We can use a stack here - a special stack that is also called a Monotonically decreasing stack.
+1. When we find decreasing numbers, we push their index to the stack.
+2. In the for loop, we peek at the stack every time to check if the current value sitting at index i is greater than the value sitting at the peeked index.
+3. In the success scenario, we'll pop from the stack, and in the result array, store the greater element – sitting at index i.
+4. We keep popping from the stack until condition 2 is false.
+5. In case the stack is empty, and we don't have any element to process, we push the element to the stack.
+6. Once we reach the length of the array, we check if the stack is not empty, and we go through the array again.
+7. We repeat the same logic applied at step 3.
+
+------------------------------------------------------------------
+Time Complexity: O(3n); At max, we'll do 2 passes: O(2n) + 1 pass to fill the array with -1.
+Space Complexity: O(1) ; No auxiliary space is used.
+
+
+*/
+
+public class Solution {
+    public int[] NextGreaterElements(int[] nums) {
+    
+        int n = nums.Length;
+        int[] res = new int[n];
+        Stack<int> st = new Stack<int>();
+
+        // Fill the input array with -1
+        for (int i = 0; i < n; i++)
+        {
+            res[i] = -1;
+        }
+
+        for (int i = 0; i < 2 * n; i++)
+        {
+            int idx = i % n;
+
+            if (st.Count > 0 && st.Peek() == idx)
+                break;
+
+            while (st.Count > 0 && nums[st.Peek()] < nums[idx])
+            {
+                int popped = st.Pop();
+                res[popped] = nums[idx];
+            }
+
+            if (i < n) // Only add index in the first pass.
+            {
+                st.Push(i);
+            }
+        }
+        return res;
+    }
+}
