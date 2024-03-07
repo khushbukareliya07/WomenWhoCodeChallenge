@@ -41,48 +41,40 @@ class Solution {
         //l2 is the smaller side
         while(l2 != null)
         {
-            // System.out.println("l1 : "+l1.val+ "  ,l2 : "+l2.val);
-            if(l2.val ==0) {
-                l1.val = l1.val + carry;
-                carry =0;
-            }else if(l1.val ==0)
-            {
-                // System.out.print("ZERO CASE :l1-val is: "+l1.val+" & L2:"+l2.val+"  , carry is: "+carry);
-                 l1.val = l2.val+carry;
-                 carry =0;
-            }
-            // System.out.println("BEFORE SUM : l1 : "+l1.val+ "  ,l2 : "+l2.val);
-            else
-            {
-                sum = l2.val+ l1.val+carry;
-            
-            // System.out.println("Sum: "+sum+ "  , Cuurent carry: "+carry);
+            sum = l2.val+ l1.val+carry;
             if(sum>9)
             {
                 l1.val =sum%10; //add remainder as a value
                 carry = sum/10;
-                // System.out.println("New Carry Value : "+carry);
-                
             }else
             {
                 l1.val =sum;
                 carry =0;
             }
             sum =0;
-            
-            }
              // System.out.println("At last SUM: "+sum);
             l1 = l1.next;
             l2 = l2.next;
-           
+        }        
+       
+        while(l1 != null && carry >0)
+        {
+            sum = l1.val+carry;
+            carry = sum/10;
+            l1.val = sum%10;
+            l1 = l1.next;
+        }  
+       
+        if(carry ==1)
+        {
+             l1 =t1;
+            while(l1.next != null)
+            { 
+                l1 = l1.next;
+             }
+            l1.next = new ListNode(carry);
         }
-       while(l1 != null && carry >0)
-       {
-          sum = l1.val+carry;
-          carry = sum/10;
-          l1.val = sum%10;
-           l1 = l1.next;
-       }
+        
         return t1;
     }
 }
