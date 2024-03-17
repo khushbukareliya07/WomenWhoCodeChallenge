@@ -1,1 +1,31 @@
 //bfs graph problem
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        
+    //1. sortt he array based on start time!
+     Arrays.sort(intervals, (a,b)-> a[0]-b[0]); //ascending
+        
+    //2. meeting end time!! -> Min Heap! - Min number of rooms //ascending sorting based on the end time
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> a-b);
+    
+        for(int[] interval : intervals)
+        {
+            int start = interval[0];
+            int end = interval[1];
+            
+            if(!pq.isEmpty())
+            {
+                if(start >= pq.peek())
+                {
+                    pq.poll();
+                    
+                }
+                pq.add(end);
+            }
+            else
+                pq.add(end); // if we don't put else - we'll adding end twice
+        }
+        //min heap size says these rooms are occupied - so that'sthe min number of meeting rooms required.
+        return pq.size();
+    }
+}
